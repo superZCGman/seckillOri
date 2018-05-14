@@ -1,0 +1,43 @@
+server:
+  port: 8090
+spring:
+  redis:
+    host: 180.76.182.206
+    port: 6379
+    password:
+  datasource:
+    url: jdbc:mysql://180.76.182.206:3306/mytestDB
+    username: root
+    password: root
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  application:
+    name: spirng-boot-rabbitmq
+#  data:
+#    mongodb:
+#      database: test_one
+#      host: 139.129.206.96
+  rabbitmq:
+    username: guest
+    password: guest
+    publisher-confirms: true
+    virtual-host: /
+    addresses: localhost:5672
+mybatis:
+  type-aliases-package: com.limai.*.model
+  mapper-locations: classpath:com/limai/user/mapper/*.xml
+  config-location: classpath:mybatis-config.xml
