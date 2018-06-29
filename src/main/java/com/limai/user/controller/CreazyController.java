@@ -29,7 +29,7 @@ public class CreazyController {
 
     @PostMapping("/buy")
     @ApiOperation(value = "/buy",notes = "秒杀活动")
-    public synchronized String secKill(HttpServletRequest request){
+    public synchronized String secKill(HttpServletRequest request,@ApiParam(value = "填写自己的代号") @RequestParam(required = false) String username){
         try {
             String userIp = request.getRemoteAddr();
             Integer num = new Random().nextInt(cnt);
@@ -47,7 +47,7 @@ public class CreazyController {
             String product = (String) redisUtil.get(pre + num);
             redisUtil.remove(pre + num);
 
-            String result = "恭喜！！！！" + userIp + "用户1元秒杀了====》" + product;
+            String result = "恭喜！！！！" + userIp + "用户: "+username+" 1元秒杀了====》" + product;
 
             logger.info(result);
 
@@ -59,9 +59,8 @@ public class CreazyController {
     }
 
 
-    @GetMapping("refresh")
-    @ApiOperation(value = "/refresh",notes = "刷新库存")
-    public String refresh(@ApiParam(value = "抢购数量") @RequestParam(required = false) int count){
+    @GetMapping("/refresh")
+    public String refresh(@RequestParam(required = false) int count){
         logger.info("刷新前库存总量："+cnt);
         for(int j = 0;j<cnt;j++){
             redisUtil.remove(pre+j);
