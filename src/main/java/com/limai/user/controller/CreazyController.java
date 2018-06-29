@@ -62,16 +62,18 @@ public class CreazyController {
     @GetMapping("refresh")
     @ApiOperation(value = "/refresh",notes = "刷新库存")
     public String refresh(@ApiParam(value = "抢购数量") @RequestParam(required = false) int count){
+        logger.info("刷新前库存总量："+cnt);
         for(int j = 0;j<cnt;j++){
-            redisUtil.remove("k");
+            redisUtil.remove(pre+j);
         }
-
+        numbers.clear();
         for(int i = 0;i < count-1;i++){
             redisUtil.set(pre + i, "全自动洗屁股马桶！");
         }
         int best = count-1;
         redisUtil.set(pre+best,"iphone X");
         this.cnt = count;
+        logger.info("刷新后库存总量："+cnt);
         return "货品已更新,更新数量："+count+"个！";
     }
 

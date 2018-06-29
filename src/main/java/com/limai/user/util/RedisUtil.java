@@ -87,9 +87,7 @@ public class RedisUtil {
      * @param key
      */
     public void remove(final String key) {
-        if (exists(prefix2Key(key))) {
-            redisTemplate.delete(prefix2Key(key));
-        }
+        redisTemplate.delete(prefix2Key(key));
     }
     /**
      * 判断缓存中是否有对应的value
