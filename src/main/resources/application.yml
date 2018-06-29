@@ -4,7 +4,7 @@ spring:
   redis:
     host: 180.76.182.206
     port: 6379
-    password:
+    password: zcgatt1314
   datasource:
     url: jdbc:mysql://180.76.182.206:3306/mytestDB
     username: root
@@ -31,12 +31,6 @@ spring:
 #    mongodb:
 #      database: test_one
 #      host: 139.129.206.96
-  rabbitmq:
-    username: guest
-    password: guest
-    publisher-confirms: true
-    virtual-host: /
-    addresses: localhost:5672
 mybatis:
   type-aliases-package: com.limai.*.model
   mapper-locations: classpath:com/limai/user/mapper/*.xml

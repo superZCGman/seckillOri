@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("帅国国的优雅restful风格API")
                 .description("呦呦呦，厉害了！")
-                .termsOfServiceUrl("www.cgatt1212.com")
+                .termsOfServiceUrl("www.cgatt1212.com/guns")
                 .contact("苦逼的我")
                 .version("1.0.0")
                 .build();

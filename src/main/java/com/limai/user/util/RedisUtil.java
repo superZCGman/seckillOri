@@ -1,14 +1,12 @@
 package com.limai.user.util;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -17,10 +15,10 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnClass(RedisTemplate.class)
 public class RedisUtil {
 
-    @Autowired
-    protected RedisTemplate redisTemplate;
+    @Resource
+    protected RedisTemplate<String,Object> redisTemplate;
 
-
+    private static final String PRE = "ms_";
 
     private String prefix2Key(final String key){
         if(StringUtils.isEmpty(key)){
@@ -30,7 +28,7 @@ public class RedisUtil {
                 e.printStackTrace();
             }
         }
-        return key;
+        return PRE+key;
     }
 
     /**
@@ -39,16 +37,13 @@ public class RedisUtil {
      * @param value
      * @return
      */
-    public boolean set(final String key, Object value) {
-        boolean result = false;
+    public void set(final String key, final Object value) {
+        remove(key);
         try {
-            ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-            operations.set(prefix2Key(key), value);
-            result = true;
+            redisTemplate.opsForValue().set(prefix2Key(key), value);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
     }
     /**
      * 写入缓存设置时效时间
@@ -56,12 +51,11 @@ public class RedisUtil {
      * @param value
      * @return
      */
-    public boolean set(final String key, Object value, Long expireTime ,TimeUnit timeUnit) {
+    public boolean set(final String key, final Object value, Long expireTime ,TimeUnit timeUnit) {
         boolean result = false;
         try {
-            ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-            operations.set(key, value);
-            redisTemplate.expire(key, expireTime, timeUnit);
+            redisTemplate.opsForValue().set(prefix2Key(key), value);
+            redisTemplate.expire(prefix2Key(key), expireTime, timeUnit);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +77,7 @@ public class RedisUtil {
      * @param pattern
      */
     public void removePattern(final String pattern) {
-        Set<Serializable> keys = redisTemplate.keys(pattern);
+        Set<String> keys = redisTemplate.keys(pattern);
         if (keys.size() > 0){
             redisTemplate.delete(keys);
         }
@@ -93,8 +87,8 @@ public class RedisUtil {
      * @param key
      */
     public void remove(final String key) {
-        if (exists(key)) {
-            redisTemplate.delete(key);
+        if (exists(prefix2Key(key))) {
+            redisTemplate.delete(prefix2Key(key));
         }
     }
     /**
@@ -103,7 +97,7 @@ public class RedisUtil {
      * @return
      */
     public boolean exists(final String key) {
-        return redisTemplate.hasKey(key);
+        return redisTemplate.hasKey(prefix2Key(key));
     }
     /**
      * 读取缓存
@@ -112,8 +106,7 @@ public class RedisUtil {
      */
     public Object get(final String key) {
         Object result = null;
-        ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-        result = operations.get(key);
+        result = redisTemplate.opsForValue().get(prefix2Key(key));
         return result;
     }
 
@@ -124,8 +117,7 @@ public class RedisUtil {
      * @param value
      */
     public void hmSet(String key, Object hashKey, Object value){
-        HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
-        hash.put(key,hashKey,value);
+        redisTemplate.opsForHash().put(key,hashKey,value);
     }
 
     /**
@@ -135,8 +127,7 @@ public class RedisUtil {
      * @return
      */
     public Object hmGet(String key, Object hashKey){
-        HashOperations<String, Object, Object>  hash = redisTemplate.opsForHash();
-        return hash.get(key,hashKey);
+        return redisTemplate.opsForHash().get(prefix2Key(key),hashKey);
     }
 
     /**
@@ -145,8 +136,7 @@ public class RedisUtil {
      * @param v
      */
     public void lPush(String k,Object v){
-        ListOperations<String, Object> list = redisTemplate.opsForList();
-        list.rightPush(k,v);
+        redisTemplate.opsForList().rightPush(k,v);
     }
 
     /**
@@ -157,8 +147,8 @@ public class RedisUtil {
      * @return
      */
     public List<Object> lRange(String k, long l, long l1){
-        ListOperations<String, Object> list = redisTemplate.opsForList();
-        return list.range(k,l,l1);
+        ;
+        return redisTemplate.opsForList().range(k,l,l1);
     }
 
     /**
@@ -167,8 +157,7 @@ public class RedisUtil {
      * @param value
      */
     public void add(String key,Object value){
-        SetOperations<String, Object> set = redisTemplate.opsForSet();
-        set.add(key,value);
+        redisTemplate.opsForSet().add(key,value);
     }
 
     /**
@@ -177,8 +166,7 @@ public class RedisUtil {
      * @return
      */
     public Set<Object> setMembers(String key){
-        SetOperations<String, Object> set = redisTemplate.opsForSet();
-        return set.members(key);
+        return redisTemplate.opsForSet().members(key);
     }
 
     /**
@@ -188,8 +176,7 @@ public class RedisUtil {
      * @param scoure
      */
     public void zAdd(String key,Object value,double scoure){
-        ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        zset.add(key,value,scoure);
+        redisTemplate.opsForZSet().add(key,value,scoure);
     }
 
     /**
@@ -200,7 +187,7 @@ public class RedisUtil {
      * @return
      */
     public Set<Object> rangeByScore(String key,double scoure,double scoure1){
-        ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.rangeByScore(key, scoure, scoure1);
+        return redisTemplate.opsForZSet().rangeByScore(key, scoure, scoure1);
     }
+
 }
