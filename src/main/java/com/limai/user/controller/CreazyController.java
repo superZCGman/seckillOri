@@ -100,9 +100,9 @@ public class CreazyController {
         return "realPath:=======>"+realPath + "\n" + "webPath:=========>" + webPath;
     }
 
-    @RequestMapping(value = "/gotoIndex",method = RequestMethod.GET)
+    @RequestMapping(value = "/gotoIndex")
     public String gotoIndex(){
-        return "/index.html";
+        return "index";
     }
 
 

@@ -5,6 +5,13 @@ spring:
     host: 180.76.182.206
     port: 6379
     password: zcgatt1314
+  thymeleaf:
+    prefix: classpath:/WEB-INF/view/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
   datasource:
     url: jdbc:mysql://180.76.182.206:3306/mytestDB
     username: root
