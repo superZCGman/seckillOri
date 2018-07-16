@@ -19,7 +19,7 @@ public class XMLtoJsonUtil {
     public static void main(String[] args) throws Exception {
         String xmlStr= readFile("/Users/zhangcg/test/test.xml");
         JSONObject json=xml2Json(xmlStr);
-        System.out.println("xml2Json:"+json.toJSONString());
+        System.out.println(json.toJSONString());
 
     }
 
