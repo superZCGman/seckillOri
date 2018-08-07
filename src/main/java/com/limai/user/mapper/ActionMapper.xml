@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.limai.user.dao.ActionDao">
+  <resultMap id="BaseResultMap" type="com.limai.user.model.Action">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="action_name" jdbcType="VARCHAR" property="actionName" />
+    <result column="action_permission" jdbcType="VARCHAR" property="actionPermission" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, action_name, action_permission
+  </sql>
+
+  <select id="selectActionsByRoleId" parameterType="java.lang.Integer" resultType="com.limai.user.model.Action">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from sys_action
+    where id IN
+    (
+      select action_id from sys_role_action
+      where role_id = #{roleId}
+    )
+  </select>
+
+</mapper>

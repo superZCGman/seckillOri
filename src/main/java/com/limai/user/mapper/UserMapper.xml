@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.limai.user.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.limai.user.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, nick_name, first_name, last_name, gender
+  </sql>
+
+  <select id="selectAllUsers" resultType="com.limai.user.model.User">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_user
+  </select>
+
+  <select id="selectUserByName" resultType="com.limai.user.model.User" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_user
+    where username=#{userName}
+  </select>
+</mapper>

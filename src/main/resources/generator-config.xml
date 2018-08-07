@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="mysqlGenerator" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库链接地址账号密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://180.76.182.206:3306/mytestDB?Unicode=true&amp;characterEncoding=utf8&amp;useSSL=false"
+                        userId="root"
+                        password="zcgatt1314"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成Model类存放位置 -->
+        <javaModelGenerator targetPackage="com.limai.user.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射xml文件存放位置 -->
+        <sqlMapGenerator targetPackage="com.limai.user.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 生成dao类存放位置 -->
+        <!-- type: ANNOTATEDMAPPER(基于注解的Mapper对象), MIXEDMAPPER(Mapper对象), XMLMAPPER(Mapper接口) -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.limai.user.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 生成对应表及类名 -->
+        <!--<table tableName="tk_weixin_client" domainObjectName="Client" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" mapperName="ClientDao" enableSelectByExample="false" selectByExampleQueryId="false" />-->
+        <table tableName="sys_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" mapperName="UserMapper" enableSelectByExample="false" selectByExampleQueryId="false" />
+
+    </context>
+</generatorConfiguration>

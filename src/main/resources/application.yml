@@ -15,7 +15,7 @@ spring:
   datasource:
     url: jdbc:mysql://180.76.182.206:3306/mytestDB
     username: root
-    password: root
+    password: zcgatt1314
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
@@ -33,7 +33,7 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   application:
-    name: spirng-boot-rabbitmq
+    name: spring-boot-rabbitmq
 #  data:
 #    mongodb:
 #      database: test_one
